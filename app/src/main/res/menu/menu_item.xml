@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/Record"
@@ -7,6 +8,12 @@
     <item
         android:id="@+id/Delete"
         android:title="Eliminar" />
-    <item android:title="Compartir" />
-    <item android:title="Personalizar" />
+    <item
+        android:icon="@drawable/ic_baseline_share_24"
+        android:title="Compartir"
+        app:showAsAction="ifRoom" />
+    <item
+        android:icon="@drawable/ic_baseline_color_lens_24"
+        android:title="Personalizar"
+        app:showAsAction="ifRoom" />
 </menu>

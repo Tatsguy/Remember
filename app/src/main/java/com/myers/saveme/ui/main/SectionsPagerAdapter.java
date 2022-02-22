@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.myers.saveme.R;
 import com.myers.saveme.Tareas;
-import com.myers.saveme.notas;
+import com.myers.saveme.Notas;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -31,7 +31,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position){
             case 0:
-                fragment = new notas();
+                fragment = new Notas();
                 break;
             case 1:
                 fragment = new Tareas();

@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.SaveMe.AppBarOverlay">
@@ -15,7 +16,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimaryDark"
+            android:theme="@style/MyStyle"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
@@ -31,5 +33,5 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_baseline_add_24"
-        android:contentDescription="TODO"/>
+        android:contentDescription="@string/app_name"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

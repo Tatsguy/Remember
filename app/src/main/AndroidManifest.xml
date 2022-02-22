@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SaveMe">
-        <activity android:name=".Activity_NewNote"></activity>
+        <activity
+            android:name=".Drawer"
+            android:label="@string/title_activity_drawer"
+            android:theme="@style/Theme.SaveMe.NoActionBar"></activity>
+        <activity android:name=".Activity_NewNote" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

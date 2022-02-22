@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:background="@color/orange">
+        android:background="@color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Remember Me!"
-                    android:textColor="@color/white"
+                    android:textColor="@color/dark_blue"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Pequeña descripción"
-                    android:textColor="@color/white"
+                    android:textColor="@color/dark_blue"
                     android:textSize="18sp" />
 
                 <TextView
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="15 de febrero"
-                    android:textColor="@color/white"
+                    android:textColor="@color/dark_blue"
                     android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
