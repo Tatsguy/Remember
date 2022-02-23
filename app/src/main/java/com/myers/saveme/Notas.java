@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.appcompat.widget.SearchView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,7 +66,7 @@ public class Notas extends Fragment implements SearchView.OnQueryTextListener{
 
     public void init(ViewGroup viewGroup){
         NoteDatabase db = new NoteDatabase(getContext());
-        elements = db.getNotes();
+        elements = db.getAllNotes();
 
         recyclerView = viewGroup.findViewById(R.id.notesRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -96,7 +95,7 @@ public class Notas extends Fragment implements SearchView.OnQueryTextListener{
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        listAdapter.filtrado(newText);
+        listAdapter.filtrate(newText);
         return false;
     }
 }

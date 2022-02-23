@@ -12,8 +12,12 @@ import java.util.List;
 
 public class NoteDatabase extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION= 2;
-    private static final String DATABASE_NAME = "notedb";
-    private static final String DATABASE_TABLE = "notestable";
+    private static final String DATABASE_NAME = "SimpleDB";
+    private static final String DATABASE_TABLE = "SimpleTable";
+
+    public NoteDatabase(Context context){
+        super(context,DATABASE_NAME,null,DATABASE_VERSION);
+    }
 
     //column date for database table
     private static final String KEY_ID = "id";
@@ -22,25 +26,23 @@ public class NoteDatabase extends SQLiteOpenHelper {
     private static final String KEY_DATE = "date";
     private static final String KEY_TIME = "time";
 
-    NoteDatabase(Context context){
-        super(context,DATABASE_NAME,null,DATABASE_VERSION);
-    }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE "+DATABASE_TABLE+"("+KEY_ID+" INT PRIMARY KEY,"+
+        String createDb = "CREATE TABLE "+DATABASE_TABLE+" ("+
+                KEY_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 KEY_TITLE+" TEXT,"+
                 KEY_CONTENT+" TEXT,"+
                 KEY_DATE+" TEXT,"+
                 KEY_TIME+" TEXT"+
-                ")";
-        db.execSQL(query);
+                " )";
+        db.execSQL(createDb);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion>=newVersion)
             return;
+
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE);
         onCreate(db);
     }
@@ -53,28 +55,32 @@ public class NoteDatabase extends SQLiteOpenHelper {
         c.put(KEY_DATE,listElement.getDate());
         c.put(KEY_TIME,listElement.getTime());
 
-        long id = db.insert(DATABASE_TABLE,null,c);
-        Log.d("inserted","ID -> "+id);
-        return id;
+        //INSERT DATA INTO THE DB
+        long ID = db.insert(DATABASE_TABLE,null,c);
+        return ID;
     }
 
     public ListElement getNote(long id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(DATABASE_TABLE,new String[]{KEY_ID,KEY_TITLE,KEY_CONTENT,KEY_DATE,KEY_TIME},KEY_ID+"=?",
-                new String[]{String.valueOf(id)},null,null,null);
+        String[] query =new String[]{KEY_ID,KEY_TITLE,KEY_CONTENT,KEY_DATE,KEY_TIME};
+        Cursor cursor = db.query(DATABASE_TABLE, query,KEY_ID+"=?", new String[]{String.valueOf(id)},null,null,null,null);
 
-        if(cursor != null){
+        if(cursor != null)
             cursor.moveToFirst();
-        }
 
-        return new ListElement(cursor.getLong(0),cursor.getString(1),cursor.getString(2),
-                cursor.getString(3),cursor.getString(4));
+        return new ListElement(
+               Long.parseLong(cursor.getString(0)),
+               cursor.getString(1),
+               cursor.getString(2),
+               cursor.getString(3),
+               cursor.getString(4));
+
     }
 
-    public List<ListElement> getNotes(){
+    public List<ListElement> getAllNotes(){
         SQLiteDatabase db = this.getReadableDatabase();
         List<ListElement> allNotes = new ArrayList<>();
-        String query = "SELECT * FROM "+DATABASE_TABLE;
+        String query = "SELECT * FROM "+DATABASE_TABLE+" ORDER BY "+KEY_ID+" DESC";
         Cursor cursor = db.rawQuery(query,null);
         if(cursor.moveToFirst()){
             do{
@@ -90,5 +96,22 @@ public class NoteDatabase extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
         return allNotes;
+    }
+
+    public int editNote(ListElement note){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues c = new ContentValues();
+        Log.d("Edited", "Edited Title: -> "+ note.getTitle() + "\n ID -> "+note.getId());
+        c.put(KEY_TITLE,note.getTitle());
+        c.put(KEY_CONTENT,note.getDescription());
+        c.put(KEY_DATE,note.getDate());
+        c.put(KEY_TIME,note.getTime());
+        return db.update(DATABASE_TABLE,c,KEY_ID+"=?",new String[]{String.valueOf(note.getId())});
+    }
+
+    void deleteNote(long id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DATABASE_TABLE,KEY_ID+"=?",new String[]{String.valueOf(id)});
+        db.close();
     }
 }

@@ -10,11 +10,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -63,9 +66,17 @@ public class Activity_NewNote extends AppCompatActivity {
         c = Calendar.getInstance();
         todayDate = c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH);
         currentTime = pad((c.get(Calendar.HOUR)+12))+":"+pad(c.get(Calendar.MINUTE));
-
-        Log.d("Calendar","Date and Time: "+todayDate+" and "+currentTime);
-
+        Intent i = getIntent();
+        long ID = i.getLongExtra("ID",0);
+        if(ID != 0){
+            NoteDatabase db = new NoteDatabase(this);
+            ListElement note = db.getNote(ID);
+            TextView title = findViewById(R.id.txtTitle);
+            title.setText(note.getTitle());
+            TextView details = findViewById(R.id.txtContent);
+            details.setText(note.getDescription());
+            details.setMovementMethod(new ScrollingMovementMethod());
+        }
     }
 
     private String pad(int n){
@@ -89,16 +100,17 @@ public class Activity_NewNote extends AppCompatActivity {
                 String content = noteContent.getText().toString();
                 ListElement listElement = new ListElement(title, content, todayDate, currentTime);
                 NoteDatabase db = new NoteDatabase(this);
-                db.addNote(listElement);
+                long id = db.addNote(listElement);
+                ListElement check = db.getNote(id);
+                Log.d("inserted","Note "+id+" -> Title:"+check.getTitle());
             }
-            goToMain();
-            return true;
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void goToMain(){
-        Intent i = new Intent(this,MainActivity.class);
-        startActivity(i);
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
     }
 }

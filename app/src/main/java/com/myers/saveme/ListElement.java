@@ -16,20 +16,20 @@ public class ListElement {
         this.time = time;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     ListElement(long id, String title, String description, String date, String time){
         this.id = id;
         this.title = title;
         this.description = description;
         this.date = date;
         this.time = time;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTime() {return time;}

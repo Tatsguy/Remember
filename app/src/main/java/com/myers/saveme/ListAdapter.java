@@ -1,6 +1,7 @@
 package com.myers.saveme;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +10,16 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private List<ListElement> mData;
-
+    private final LayoutInflater mInflater;
     List<ListElement> originalList;
-    private LayoutInflater mInflater;
-    private Context context;
 
     public ListAdapter(List<ListElement> itemList, Context context){
         this.mInflater = LayoutInflater.from(context);
@@ -32,41 +33,42 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         return mData.size();
     }
 
+    @NotNull
     @Override
     public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view = mInflater.inflate(R.layout.list_element,parent,false);
-        return new ListAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ListAdapter.ViewHolder holder, final int position){
         String title = originalList.get(position).getTitle();
-        String content = originalList.get(position).getDescription();
         String date = originalList.get(position).getDate();
         String time = originalList.get(position).getTime();
-        holder.title.setText(title);
-        holder.description.setText(content);
-        holder.date.setText(date+" "+time);
+        long id = originalList.get(position).getId();
+
+        holder.nTitle.setText(title);
+        holder.nDate.setText(date+" "+time);
+        holder.nId.setText(String.valueOf(id));
     }
 
-    public void filtrado(String txtBuscar){
-        int longitud = txtBuscar.length();
-        if(longitud==0){
+    public void filtrate(String txtSearch){
+        int longitude = txtSearch.length();
+        if(longitude==0){
             mData.clear();
             mData.addAll(originalList);
         }else{
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                List<ListElement> coleccion = mData.stream()
-                        .filter(i -> i.getTitle().toLowerCase().contains(txtBuscar.toLowerCase()))
+                List<ListElement> collection = mData.stream()
+                        .filter(i -> i.getTitle().toLowerCase().contains(txtSearch.toLowerCase()))
                         .collect(Collectors.toList());
                 mData.clear();
-                mData.addAll(coleccion);
+                mData.addAll(collection);
             }else{
-                for (ListElement l: originalList) {
-                    if (l.getTitle().toLowerCase().contains(txtBuscar.toLowerCase())){
+                for (ListElement l: originalList)
+                    if (l.getTitle().toLowerCase().contains(txtSearch.toLowerCase())) {
                         mData.add(l);
                     }
-                }
             }
         }
         notifyDataSetChanged();
@@ -77,28 +79,30 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView title,description,date,id;
+        TextView nTitle,nDescription,nDate,nId;
 
         ViewHolder(View itemView){
             super(itemView);
-            title = itemView.findViewById(R.id.titleTextView);
-            description = itemView.findViewById(R.id.descriptionTextView);
-            date = itemView.findViewById(R.id.fechaTextView);
-            id = itemView.findViewById(R.id.txtId);
+
+            nTitle = itemView.findViewById(R.id.titleTextView);
+            nDescription = itemView.findViewById(R.id.descriptionTextView);
+            nDate = itemView.findViewById(R.id.fechaTextView);
+            nId = itemView.findViewById(R.id.txtId);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(),"Item Clicked",Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(v.getContext(),Activity_NewNote.class);
+                    i.putExtra("ID",originalList.get(getAbsoluteAdapterPosition()).getId());
+                    v.getContext().startActivity(i);
                 }
             });
         }
 
         void bindData(final ListElement item){
-            id.setText(String.valueOf(item.getId()));
-            title.setText(item.getTitle());
-            description.setText(item.getDescription());
-            date.setText(item.getDate()+" "+item.getTime());
+            nTitle.setText(item.getTitle());
+            nDescription.setText(item.getDescription());
+            nDate.setText(item.getDate()+" "+item.getTime());
         }
     }
 }
