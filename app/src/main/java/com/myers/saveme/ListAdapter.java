@@ -1,13 +1,11 @@
 package com.myers.saveme;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,13 +34,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = mInflater.inflate(R.layout.list_element,null);
+        View view = mInflater.inflate(R.layout.list_element,parent,false);
         return new ListAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ListAdapter.ViewHolder holder, final int position){
-        holder.bindData(mData.get(position));
+        String title = originalList.get(position).getTitle();
+        String content = originalList.get(position).getDescription();
+        String date = originalList.get(position).getDate();
+        String time = originalList.get(position).getTime();
+        holder.title.setText(title);
+        holder.description.setText(content);
+        holder.date.setText(date+" "+time);
     }
 
     public void filtrado(String txtBuscar){
@@ -73,22 +77,28 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView iconImage;
-        TextView title,description,date;
+        TextView title,description,date,id;
 
         ViewHolder(View itemView){
             super(itemView);
-            iconImage = itemView.findViewById(R.id.iconImageView);
             title = itemView.findViewById(R.id.titleTextView);
             description = itemView.findViewById(R.id.descriptionTextView);
             date = itemView.findViewById(R.id.fechaTextView);
+            id = itemView.findViewById(R.id.txtId);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(),"Item Clicked",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         void bindData(final ListElement item){
-            iconImage.setColorFilter(Color.parseColor(item.getColor()), PorterDuff.Mode.SRC_IN);
+            id.setText(String.valueOf(item.getId()));
             title.setText(item.getTitle());
             description.setText(item.getDescription());
-            date.setText(item.getDate());
+            date.setText(item.getDate()+" "+item.getTime());
         }
     }
 }

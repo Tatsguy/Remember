@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/note"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -66,6 +67,14 @@
                     android:text="15 de febrero"
                     android:textColor="@color/dark_blue"
                     android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/txtId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="gone" />
+
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

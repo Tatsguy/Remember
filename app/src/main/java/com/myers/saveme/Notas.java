@@ -32,6 +32,7 @@ public class Notas extends Fragment implements SearchView.OnQueryTextListener{
     List<ListElement> elements;
     SearchView searchView;
     ListAdapter listAdapter;
+    RecyclerView recyclerView;
 
     public Notas() {
         // Required empty public constructor
@@ -65,24 +66,17 @@ public class Notas extends Fragment implements SearchView.OnQueryTextListener{
     }
 
     public void init(ViewGroup viewGroup){
-        elements = new ArrayList<>();
-        elements.add(new ListElement("#775447","Mexico","IDK","12 de Enero"));
-        elements.add(new ListElement("#775447","Colombia","IDK","12 de Enero"));
-        elements.add(new ListElement("#775447","Uruguay","IDK","12 de Enero"));
-        elements.add(new ListElement("#775447","Argentina","IDK","12 de Enero"));
-        elements.add(new ListElement("#775447","Mexico","IDK","12 de Enero"));
-        elements.add(new ListElement("#775447","Colombia","IDK","12 de Enero"));
-        elements.add(new ListElement("#775447","Uruguay","IDK","12 de Enero"));
-        elements.add(new ListElement("#775447","Argentina","IDK","12 de Enero"));
+        NoteDatabase db = new NoteDatabase(getContext());
+        elements = db.getNotes();
 
-
-        searchView = viewGroup.findViewById(R.id.txtBuscar);
-        listAdapter = new ListAdapter(elements,getContext());
-        RecyclerView recyclerView = viewGroup.findViewById(R.id.notesRecyclerView);
+        recyclerView = viewGroup.findViewById(R.id.notesRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        listAdapter = new ListAdapter(elements,getContext());
         recyclerView.setAdapter(listAdapter);
 
+        searchView = viewGroup.findViewById(R.id.txtBuscar);
         searchView.setOnQueryTextListener(this);
     }
 

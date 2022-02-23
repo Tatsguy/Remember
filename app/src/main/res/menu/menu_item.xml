@@ -11,9 +11,11 @@
     <item
         android:icon="@drawable/ic_baseline_share_24"
         android:title="Compartir"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:id="@+id/share"/>
     <item
         android:icon="@drawable/ic_baseline_color_lens_24"
         android:title="Personalizar"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:id="@+id/Personalize"/>
 </menu>

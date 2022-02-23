@@ -4,9 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,12 +24,13 @@ public class Activity_NewNote extends AppCompatActivity {
     String todayDate, currentTime;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_note);
 
         ActionBar actionBar = getSupportActionBar();
 
+        assert actionBar != null;
         actionBar.setHomeAsUpIndicator(R.drawable.mybutton);
 
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -74,18 +75,30 @@ public class Activity_NewNote extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater;
+        inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_item,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        switch (item.getItemId()){
-            case android.R.id.home:
-                this.finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            String title = noteTitle.getText().toString();
+            if (title.trim().length() != 0) {
+                String content = noteContent.getText().toString();
+                ListElement listElement = new ListElement(title, content, todayDate, currentTime);
+                NoteDatabase db = new NoteDatabase(this);
+                db.addNote(listElement);
+            }
+            goToMain();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToMain(){
+        Intent i = new Intent(this,MainActivity.class);
+        startActivity(i);
     }
 }

@@ -1,25 +1,40 @@
 package com.myers.saveme;
 
 public class ListElement {
-    public String color;
-    public String title;
-    public String description;
-    public String date;
+    private long id;
+    private String title;
+    private String description;
+    private String date;
+    private String time;
 
-    public ListElement(String color, String title, String description, String date) {
-        this.color = color;
+    ListElement(){}
+
+    ListElement(String title, String description, String date, String time) {
         this.title = title;
         this.description = description;
         this.date = date;
+        this.time = time;
     }
 
-    public String getColor() {
-        return color;
+    public long getId() {
+        return id;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setId(long id) {
+        this.id = id;
     }
+
+    ListElement(long id, String title, String description, String date, String time){
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.time = time;
+    }
+
+    public String getTime() {return time;}
+
+    public void setTime(String time) {this.time = time;}
 
     public String getTitle() {
         return title;
