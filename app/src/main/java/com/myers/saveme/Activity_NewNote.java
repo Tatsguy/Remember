@@ -25,6 +25,7 @@ public class Activity_NewNote extends AppCompatActivity {
     EditText noteTitle,noteContent;
     Calendar c;
     String todayDate, currentTime;
+    long ID;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,9 +66,9 @@ public class Activity_NewNote extends AppCompatActivity {
         //get Current Date and Time
         c = Calendar.getInstance();
         todayDate = c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH);
-        currentTime = pad((c.get(Calendar.HOUR)+12))+":"+pad(c.get(Calendar.MINUTE));
+        currentTime = pad((c.get(Calendar.HOUR)))+":"+pad(c.get(Calendar.MINUTE));
         Intent i = getIntent();
-        long ID = i.getLongExtra("ID",0);
+        ID = i.getLongExtra("ID",0);
         if(ID != 0){
             NoteDatabase db = new NoteDatabase(this);
             ListElement note = db.getNote(ID);
@@ -94,23 +95,35 @@ public class Activity_NewNote extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        NoteDatabase db = new NoteDatabase(this);
         if (item.getItemId() == android.R.id.home) {
-            String title = noteTitle.getText().toString();
-            if (title.trim().length() != 0) {
-                String content = noteContent.getText().toString();
-                ListElement listElement = new ListElement(title, content, todayDate, currentTime);
-                NoteDatabase db = new NoteDatabase(this);
-                long id = db.addNote(listElement);
-                ListElement check = db.getNote(id);
-                Log.d("inserted","Note "+id+" -> Title:"+check.getTitle());
+            String title = noteTitle.getText().toString().trim();
+            if (title.length() != 0) {
+                String content = noteContent.getText().toString().trim();
+                ListElement listElement = new ListElement(ID,title, content, todayDate, currentTime);
+                if(ID != 0){
+                    db.editNote(listElement);
+                }else{
+                    long id = db.addNote(listElement);
+                    ListElement check = db.getNote(id);
+                    Log.d("inserted","Note "+id+" -> Title:"+check.getTitle());
+                }
             }
             onBackPressed();
+        }
+        if (item.getItemId() == R.id.Delete){
+            if(ID != 0){
+                db.deleteNote(ID);
+            }
+            onBackPressed();
+            Toast.makeText(this,"Nota eliminda",Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed(){
-        super.onBackPressed();
+        Intent i = new Intent(this,MainActivity.class);
+        this.startActivity(i);
     }
 }

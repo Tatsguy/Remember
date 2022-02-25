@@ -42,14 +42,24 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ListAdapter.ViewHolder holder, final int position){
+        long id = originalList.get(position).getId();
         String title = originalList.get(position).getTitle();
+        String content = originalList.get(position).getDescription();
         String date = originalList.get(position).getDate();
         String time = originalList.get(position).getTime();
-        long id = originalList.get(position).getId();
+
+        if(title.length()>20){
+            title = title.substring(0,17).concat("...");
+        }
+
+        if(content.length()>25){
+            content = content.substring(0,25).concat("...");
+        }
 
         holder.nTitle.setText(title);
         holder.nDate.setText(date+" "+time);
         holder.nId.setText(String.valueOf(id));
+        holder.nDescription.setText(content);
     }
 
     public void filtrate(String txtSearch){
