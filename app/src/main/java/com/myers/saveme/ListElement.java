@@ -9,13 +9,6 @@ public class ListElement {
 
     ListElement(){}
 
-    ListElement(String title, String description, String date, String time) {
-        this.title = title;
-        this.description = description;
-        this.date = date;
-        this.time = time;
-    }
-
     ListElement(long id, String title, String description, String date, String time){
         this.id = id;
         this.title = title;

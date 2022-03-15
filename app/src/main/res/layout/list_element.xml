@@ -46,6 +46,7 @@
                     android:id="@+id/titleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand"
                     android:text="Remember Me!"
                     android:textColor="@color/dark_blue"
                     android:textSize="24sp"
@@ -55,6 +56,7 @@
                     android:id="@+id/descriptionTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
                     android:text="Pequeña descripción"
                     android:textColor="@color/dark_blue"
                     android:textSize="18sp" />
@@ -64,6 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto"
                     android:text="15 de febrero"
                     android:textColor="@color/dark_blue"
                     android:textSize="12sp" />
